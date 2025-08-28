@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html class="loading" lang="en" data-textdirection="fr">
+<!-- BEGIN: Head-->
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   
+    <link rel="apple-touch-icon" href="../frontoffice/app-assets/images/ico/apple-icon-120.png">
+    <link rel="shortcut icon" type="image/x-icon" href="../frontoffice/app-assets/images/ico/favicon.ico">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i%7COpen+Sans:300,300i,400,400i,600,600i,700,700i" rel="stylesheet">
+
+    <!-- BEGIN: Vendor CSS-->
+    <link rel="stylesheet" type="text/css" href="../frontoffice/app-assets/vendors/css/vendors.min.css">
+    <link rel="stylesheet" type="text/css" href="../frontoffice/app-assets/vendors/css/charts/jquery-jvectormap-2.0.3.css">
+    <link rel="stylesheet" type="text/css" href="../frontoffice/app-assets/vendors/css/charts/morris.css">
+    <link rel="stylesheet" type="text/css" href="../frontoffice/app-assets/vendors/css/extensions/unslider.css">
+    <link rel="stylesheet" type="text/css" href="../frontoffice/app-assets/vendors/css/weather-icons/climacons.min.css">
+    <!-- END: Vendor CSS-->
+
+    <!-- BEGIN: Theme CSS-->
+    <link rel="stylesheet" type="text/css" href="../frontoffice/app-assets/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="../frontoffice/app-assets/css/bootstrap-extended.css">
+    <link rel="stylesheet" type="text/css" href="../frontoffice/app-assets/css/colors.css">
+    <link rel="stylesheet" type="text/css" href="../frontoffice/app-assets/css/components.css">
+    <!-- END: Theme CSS-->
+
+    <!-- BEGIN: Page CSS-->
+    <link rel="stylesheet" type="text/css" href="../frontoffice/app-assets/css/core/menu/menu-types/vertical-overlay-menu.css">
+    <link rel="stylesheet" type="text/css" href="../frontoffice/app-assets/css/core/colors/palette-gradient.css">
+    <!-- link(rel='stylesheet', type='text/css', href=app_assets_path+'/css'+rtl+'/pages/users.css')-->
+    <!-- END: Page CSS-->
+
+    <!-- BEGIN: Custom CSS-->
+    <link rel="stylesheet" type="text/css" href="../frontoffice/assets/css/style.css">
+    <!-- END: Custom CSS-->
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+</head>
+<!-- END: Head-->
+
+<!-- BEGIN: Body-->
+
+<body class="vertical-layout vertical-overlay-menu 2-columns   fixed-navbar" data-open="click" data-menu="vertical-overlay-menu" data-col="2-columns">
+{% include 'profile/navBar.html.twig' %}
+
+ 
+
+<!-- BEGIN: Content-->
+
+{% set hasValiderPermission = false %}
+{% for permission in app.user.permissions %}
+    {% if permission.name == 'Valider Demande' %}
+        {% set hasValiderPermission = true %}
+    {% endif %}
+{% endfor %}
+
+{% if hasValiderPermission %}
+<!-- BEGIN: Content-->
+<div class="app-content content">
+    <div class="content-wrapper">
+        <div class="content-body">
+{% block body %}
+            <div class="app-content content">
+                <div class="content-wrapper">
+                    <div class="content-body">
+                        <h2>📊 Statistiques des Demandes par Mois</h2>
+                        <canvas id="statChart" width="800" height="400"></canvas>
+                    </div>
+                </div>
+            </div>
+            <!-- Stats RH -->
+            <div class="row">
+                <!-- Total demandes -->
+                <div class="col-xl-3 col-lg-6 col-12">
+                    <div class="card">
+                        <div class="card-content">
+                            <div class="card-body">
+                                <div class="media">
+                                    <div class="media-body text-left w-100">
+                                        <h3 class="primary">{{ stats.totalDemandes }}</h3>
+                                        <span>Total Demandes des attestations </span>
+                                    </div>
+                                    <div class="media-right media-middle">
+                                        <i class="icon-layers primary font-large-2 float-right"></i>
+                                    </div>
+                                </div>
+                                <div class="progress progress-sm mt-1 mb-0">
+                                    <div class="progress-bar bg-primary" role="progressbar" 
+                                         style="width: 100%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- En attente -->
+                <div class="col-xl-3 col-lg-6 col-12">
+                    <div class="card">
+                        <div class="card-content">
+                            <div class="card-body">
+                                <div class="media">
+                                    <div class="media-body text-left w-100">
+                                        <h3 class="warning">{{ stats.attente }}</h3>
+                                        <span>En Attente</span>
+                                    </div>
+                                    <div class="media-right media-middle">
+                                        <i class="icon-hourglass warning font-large-2 float-right"></i>
+                                    </div>
+                                </div>
+                                <div class="progress progress-sm mt-1 mb-0">
+                                    <div class="progress-bar bg-warning" role="progressbar" 
+                                         style="width: 60%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Avances -->
+                <div class="col-xl-3 col-lg-6 col-12">
+                    <div class="card">
+                        <div class="card-content">
+                            <div class="card-body">
+                                <div class="media">
+                                    <div class="media-body text-left w-100">
+                                        <h3 class="success">{{ stats.totalAvances }} DT</h3>
+                                        <span>Total Avances</span>
+                                    </div>
+                                    <div class="media-right media-middle">
+                                        <i class="icon-wallet success font-large-2 float-right"></i>
+                                    </div>
+                                </div>
+                                <div class="progress progress-sm mt-1 mb-0">
+                                    <div class="progress-bar bg-success" role="progressbar" 
+                                         style="width: 80%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Prêts -->
+                <div class="col-xl-3 col-lg-6 col-12">
+                    <div class="card">
+                        <div class="card-content">
+                            <div class="card-body">
+                                <div class="media">
+                                    <div class="media-body text-left w-100">
+                                        <h3 class="danger">{{ stats.totalPrets }} DT</h3>
+                                        <span>Total Prêts</span>
+                                    </div>
+                                    <div class="media-right media-middle">
+                                        <i class="icon-briefcase danger font-large-2 float-right"></i>
+                                    </div>
+                                </div>
+                                <div class="progress progress-sm mt-1 mb-0">
+                                    <div class="progress-bar bg-danger" role="progressbar" 
+                                         style="width: 70%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Attestations -->
+            <div class="row">
+                <div class="col-xl-3 col-lg-6 col-12">
+                    <div class="card">
+                        <div class="card-content">
+                            <div class="card-body">
+                                <div class="media">
+                                    <div class="media-body text-left w-100">
+                                        <h3 class="info">{{ stats.attestations }}</h3>
+                                        <span>Attestations Générées</span>
+                                    </div>
+                                    <div class="media-right media-middle">
+                                        <i class="icon-doc info font-large-2 float-right"></i>
+                                    </div>
+                                </div>
+                                <div class="progress progress-sm mt-1 mb-0">
+                                    <div class="progress-bar bg-info" role="progressbar" 
+                                         style="width: 90%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+           
+            <!-- /Stats RH -->
+
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+<!-- END: Content-->
+{% endif %}
+
+
+
+
+
+
+    <div class="sidenav-overlay"></div>
+    <div class="drag-target"></div>
+
+    <!-- BEGIN: Footer-->
+    <footer class="footer footer-static footer-transparent">
+        <p class="clearfix blue-grey lighten-2 text-sm-center mb-0 px-2"><span class="float-md-left d-block d-md-inline-block">Copyright &copy; 2019 <a class="text-bold-800 grey darken-2" href="https://themeforest.net/user/pixinvent/portfolio?ref=pixinvent" target="_blank">PIXINVENT </a></span><span class="float-md-right d-none d-lg-block">Hand-crafted & Made with <i class="ft-heart pink"></i></span></p>
+    </footer>
+    <!-- END: Footer-->
+
+
+    <!-- BEGIN: Vendor JS-->
+    <script src="../frontoffice/app-assets/vendors/js/vendors.min.js"></script>
+    <!-- BEGIN Vendor JS-->
+
+    <!-- BEGIN: Page Vendor JS-->
+    <script src="../frontoffice/app-assets/vendors/js/extensions/jquery.knob.min.js"></script>
+    <script src="../frontoffice/app-assets/js/scripts/extensions/knob.js"></script>
+    <script src="../frontoffice/app-assets/vendors/js/charts/raphael-min.js"></script>
+    <script src="../frontoffice/app-assets/vendors/js/charts/morris.min.js"></script>
+    <script src="../frontoffice/app-assets/vendors/js/charts/jvector/jquery-jvectormap-2.0.3.min.js"></script>
+    <script src="../frontoffice/app-assets/vendors/js/charts/jvector/jquery-jvectormap-world-mill.js"></script>
+    <script src="../frontoffice/app-assets/data/jvector/visitor-data.js"></script>
+    <script src="../frontoffice/app-assets/vendors/js/charts/chart.min.js"></script>
+    <script src="../frontoffice/app-assets/vendors/js/charts/jquery.sparkline.min.js"></script>
+    <script src="../frontoffice/app-assets/vendors/js/extensions/unslider-min.js"></script>
+    <link rel="stylesheet" type="text/css" href="../frontoffice/app-assets/css/core/colors/palette-climacon.css">
+    <link rel="stylesheet" type="text/css" href="../frontoffice/app-assets/fonts/simple-line-icons/style.min.css">
+    <!-- END: Page Vendor JS-->
+
+    <!-- BEGIN: Theme JS-->
+    <script src="../frontoffice/app-assets/js/core/app-menu.js"></script>
+    <script src="../frontoffice/app-assets/js/core/app.js"></script>
+    <!-- END: Theme JS-->
+
+    <!-- BEGIN: Page JS-->
+    <script src="../frontoffice/app-assets/js/scripts/pages/dashboard-analytics.js"></script>
+    
+<!-- Script Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('statChart').getContext('2d');
+
+    const labels = [
+        {% for row in pretsMensuelles %}
+            "{{ row.mois }}",
+        {% endfor %}
+    ];
+
+    const avances = [
+        {% for row in avancesMensuelles %}
+            {{ row.nb }},
+        {% endfor %}
+    ];
+
+    const prets = [
+        {% for row in pretsMensuelles %}
+            {{ row.nb }},
+        {% endfor %}
+    ];
+
+    new Chart(ctx, {
+        type: 'line', // tu peux mettre 'bar' si tu veux un histogramme
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    label: "Avances Salaire",
+                    data: avances,
+                    borderColor: "blue",
+                    backgroundColor: "rgba(0,0,255,0.2)",
+                    fill: true,
+                    tension: 0.1
+                },
+                {
+                    label: "Prêts",
+                    data: prets,
+                    borderColor: "green",
+                    backgroundColor: "rgba(0,255,0,0.2)",
+                    fill: true,
+                    tension: 0.1
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { position: 'top' },
+                title: {
+                    display: true,
+                    text: 'Nombre de demandes Avances & Prêts par mois'
+                }
+            }
+        }
+    });
+</script>
+
+
+    <!-- END: Page JS-->
+
+</body>
+<!-- END: Body-->
+ 
+</html>

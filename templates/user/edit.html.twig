@@ -1,0 +1,16 @@
+{% extends 'baseF.html.twig' %}
+
+{% block title %}Edit User{% endblock %}
+
+{% block body %}
+    <h1>Edit User</h1>
+
+    {{ include('user/_form.html.twig', {'button_label': 'Update'}) }}
+
+   <a href="{{ path('app_profile') }}" class="btn btn-outline-secondary btn-sm">
+       <i class="fas fa-arrow-left"></i> Retour 
+    </a>
+
+    {{ include('user/_delete_form.html.twig') }}
+{% endblock %}  
+

@@ -1,0 +1,12 @@
+{% extends 'baseF.html.twig' %}
+
+{% block title %}New Demande{% endblock %}
+
+{% block body %}
+
+    {{ include('demande/_form.html.twig') }}
+
+    <a href="{{ path('app_mes_demandes') }}" class="btn btn-outline-secondary btn-sm">
+       <i class="fas fa-arrow-left"></i> Retour 
+    </a>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Connexion{% endblock %}
+
+{% block body %}
+<div class="container mt-5" style="max-width: 400px;">
+   
+
+    {% if error %}
+        <div class="alert alert-danger">
+            {{ error.messageKey|trans(error.messageData, 'security') }}
+        </div>
+    {% endif %}
+
+    <form action="{{ path('app_login') }}" method="post">
+       
+
+        <fieldset class="form-group position-relative has-icon-left">
+            <input type="email" value="{{ last_username }}" name="email" id="inputEmail" placeholder="Enter your email" class="form-control" required autofocus>
+                <div class="form-control-position">
+                     <i class="ft-user"></i>
+                </div>
+        </fieldset>
+
+      
+         
+        <fieldset class="form-group position-relative has-icon-left">
+          
+           <input type="password" name="password" id="inputPassword" placeholder="Enter Password" class="form-control" required>
+              <div class="form-control-position">
+               <i class="fa fa-key"></i>
+            </div>
+        </fieldset>
+        <input type="hidden" name="_csrf_token"
+               value="{{ csrf_token('authenticate') }}"
+        >
+
+        <button type="submit" class="btn btn-outline-primary btn-block"><i class="ft-unlock"></i>Login</button> 
+              
+
+    </form>
+</div>
+{% endblock %}

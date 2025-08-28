@@ -1,0 +1,127 @@
+{% extends 'baseF.html.twig' %}
+
+{% block body %}
+<section class="py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="card-title mb-0">
+                        <i class="fas fa-hand-holding-usd me-2"></i> Demande de Prêt
+                    </h4>
+                </div>
+                <div class="card-body">
+                    {{ form_start(form, {'attr': {'novalidate': 'novalidate', 'id':'pretForm'}}) }}
+
+                    <!-- Salaire Net -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Salaire Net</label>
+                        <input type="text" id="salaireNet" class="form-control" value="{{ app.user.salaireNet }}" readonly>
+                    </div>
+
+                    <!-- Montant -->
+                    <div class="mb-3">
+                        {{ form_label(form.montant, 'Montant (DT)', {'label_attr': {'class': 'form-label fw-semibold'}}) }}
+                        {{ form_widget(form.montant, {
+                            'attr': {
+                                'class': 'form-control form-control-lg border-primary shadow-sm p-2',
+                                'placeholder': 'Entrez le montant'
+                            }
+                        }) }}
+                        {{ form_errors(form.montant) }}
+                    </div>
+
+                    <!-- Durée -->
+                    <div class="mb-3">
+                        {{ form_label(form.duree, 'Durée (mois)', {'label_attr': {'class': 'form-label fw-semibold'}}) }}
+                        {{ form_widget(form.duree, {
+                            'attr': {
+                                'class': 'form-control form-control-lg border-primary shadow-sm p-2',
+                                'placeholder': 'Entrez la durée en mois'
+                            }
+                        }) }}
+                        {{ form_errors(form.duree) }}
+                    </div>
+
+                    <!-- Raison -->
+                    <div class="mb-3">
+                        {{ form_label(form.raison, 'Raison', {'label_attr': {'class': 'form-label fw-semibold'}}) }}
+                        {{ form_widget(form.raison, {
+                            'attr': {
+                                'class': 'form-control form-control-lg border-primary shadow-sm p-2',
+                                'rows': 3,
+                                'placeholder': 'Entrez la raison de votre demande'
+                            }
+                        }) }}
+                        {{ form_errors(form.raison) }}
+                    </div>
+
+                    <!-- Bouton pour calculer -->
+                    <div class="mb-3">
+                        <button type="button" id="btnCalculer" class="btn btn-info w-100">Calculer la Tranche</button>
+                    </div>
+
+                    <!-- Résultat du calcul -->
+                    <div id="calculs" style="display:none;">
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Tranche Mensuelle</label>
+                            <input type="text" id="trancheMensuelle" class="form-control" readonly>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Salaire Net Après Tranche</label>
+                            <input type="text" id="salaireApresTranche" class="form-control" readonly>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Date de fin de remboursement</label>
+                            <input type="text" id="moisFin" class="form-control" readonly>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between mt-3">
+                        <a href="{{ path('app_profile') }}" class="btn btn-secondary">Annuler</a>
+                        <button type="submit" class="btn btn-primary">Envoyer</button>
+                    </div>
+
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const btn = document.getElementById('btnCalculer');
+    const calculsDiv = document.getElementById('calculs');
+    const form = document.getElementById('pretForm');
+
+    // Symfony génère les IDs automatiquement
+    const montantInput = form.querySelector('[id$="_montant"]');
+    const dureeInput = form.querySelector('[id$="_duree"]');
+    const salaireNetInput = document.getElementById('salaireNet');
+
+    btn.addEventListener('click', function() {
+        const montant = parseFloat(montantInput.value) || 0;
+        const duree = parseInt(dureeInput.value) || 1;
+        const salaireNet = parseFloat(salaireNetInput.value) || 0;
+
+        const tranche = montant / duree;
+        const salaireApresTranche = salaireNet - tranche;
+
+        // Calcul de la date de fin complète
+        const today = new Date();
+        const endDate = new Date(today.setMonth(today.getMonth() + duree));
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        const endDateFormatted = endDate.toLocaleDateString('fr-FR', options);
+
+        document.getElementById('trancheMensuelle').value = tranche.toFixed(2) + ' DT';
+        document.getElementById('salaireApresTranche').value = salaireApresTranche.toFixed(2) + ' DT';
+        document.getElementById('moisFin').value = endDateFormatted;
+
+        calculsDiv.style.display = 'block';
+    });
+});
+</script>
+{% endblock %}

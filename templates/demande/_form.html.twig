@@ -1,0 +1,46 @@
+<!-- Basic form layout section start -->
+<section id="basic-form-layouts">
+    <div class="row match-height justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Formulaire de demande</h4>
+                </div>
+                <div class="card-content collapse show">
+                    <div class="card-body">
+                        {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+
+
+                        <div class="form-body">
+                            <h4 class="form-section"><i class="ft-user"></i> Demande d'attestaion</h4>
+
+                            <div class="form-group">
+                                {{ form_label(form.type) }}
+                                {{ form_widget(form.type, {'attr': {'class': 'form-control'}}) }}
+                                {% if form_errors(form.type) %}
+                                    <div class="alert alert-danger mt-2 p-2 rounded">
+                                        {{ form_errors(form.type) }}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                           
+
+
+                        </div>
+
+                        <div class="form-actions mt-3">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fa fa-check-square-o"></i> {{ button_label|default('Enregistrer') }}
+                            </button>
+                            <a href="{{ path('app_demande_index') }}" class="btn btn-secondary ml-2">Annuler</a>
+                        </div>
+
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- // Basic form layout section end -->

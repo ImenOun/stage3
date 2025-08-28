@@ -1,0 +1,98 @@
+ 
+{{ form_start(form, {'attr': {'class': 'row g-3'}}) }}
+
+    <div class="col-md-6">
+        <div class="form-group position-relative has-icon-left">
+            {{ form_widget(form.email, {
+                'attr': {
+                    'class': 'form-control',
+                    'placeholder': 'Entrez l\'adresse e-mail'
+                }
+            }) }}
+            <div class="form-control-position">
+                <i class="ft-mail"></i>
+            </div>
+            {{ form_errors(form.email) }}
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-group position-relative has-icon-left">
+            {{ form_widget(form.nom, {
+                'attr': {
+                    'class': 'form-control',
+                    'placeholder': 'Entrez le nom'
+                }
+            }) }}
+            <div class="form-control-position">
+                <i class="ft-user"></i>
+            </div>
+            {{ form_errors(form.nom) }}
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-group position-relative has-icon-left">
+            {{ form_widget(form.password, {
+                'attr': {
+                    'class': 'form-control',
+                    'placeholder': 'Entrez le mot de passe'
+                }
+            }) }}
+            <div class="form-control-position">
+                <i class="fa fa-key"></i>
+            </div>
+            {{ form_errors(form.password) }}
+        </div>
+    </div>
+
+    <div class="col-md-12">
+    <label class="mb-2">Privilèges :</label>
+    <div class="form-group">
+        <div class="form-check">
+            {{ form_widget(form.permissions) }}
+        </div>
+        {{ form_errors(form.permissions) }}
+    </div>
+</div>
+
+<div class="col-md-6">
+    <div class="form-group position-relative has-icon-left">
+        {{ form_widget(form.salaireNet, {
+            'attr': {
+                'class': 'form-control',
+                'placeholder': 'Salaire Net'
+            }
+        }) }}
+        <div class="form-control-position">
+            <i class="fa fa-money"></i>
+        </div>
+        {{ form_errors(form.salaireNet) }}
+    </div>
+</div>
+
+<div class="col-md-6">
+    <div class="form-group position-relative has-icon-left">
+        {{ form_widget(form.salaireBrute, {
+            'attr': {
+                'class': 'form-control',
+                'placeholder': 'Salaire Brut'
+            }
+        }) }}
+        <div class="form-control-position">
+            <i class="fa fa-money"></i>
+        </div>
+        {{ form_errors(form.salaireBrute) }}
+    </div>
+</div>
+
+
+
+    <div class="col-3 md-4">
+        <button type="submit" class="btn btn-outline-primary btn-block">
+            <i class="ft-user"></i> {{ button_label|default('Register') }}
+        </button>  
+    </div>
+    
+
+{{ form_end(form) }}
